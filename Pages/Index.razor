@@ -7,4 +7,24 @@ Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
-<canvas id="mycanvas" height=600 width=1000></canvas>
+<div class="row justify-content-between">
+    <h3>Custom node added called "multiply". It can be found in "basic/mult"</h3>
+
+    <div class="col-8">
+        <canvas id="mycanvas" height=500 width=1000></canvas>
+    </div>
+    <div class="col-4">
+        <p>Add Constant Node from Blazor side</p>
+            <input type="number" placeholder="Enter node value" @bind="inputValue" />
+        <button @onclick="@SetConstantNode">Add node</button>
+    </div>
+</div>
+
+@code {
+    private int? inputValue;
+
+    async void SetConstantNode()
+    {
+        await JS.InvokeVoidAsync("SetConstantNode", "node_const3", inputValue);
+    }
+}
