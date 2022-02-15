@@ -15,7 +15,7 @@ Welcome to your new app.
     </div>
     <div class="col-4">
         <p>Add Constant Node from Blazor side</p>
-            <input type="number" placeholder="Enter node value" @bind="inputValue" />
+        <input type="number" placeholder="Enter node value" @bind="inputValue" />
         <button @onclick="@SetConstantNode">Add node</button>
     </div>
 </div>
@@ -25,6 +25,11 @@ Welcome to your new app.
 
     async void SetConstantNode()
     {
-        await JS.InvokeVoidAsync("SetConstantNode", "node_const3", inputValue);
+        if (inputValue == null){
+        await JS.InvokeVoidAsync("SetConstantNode", "node_const3", 1);
+        }
+        else{
+            await JS.InvokeVoidAsync("SetConstantNode", "node_const3", inputValue);
+        }
     }
 }
