@@ -7,8 +7,8 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "BlazorLitegraph.dll": "sha256-sA0jmqT0nTjAvKHNdHWCQgr6EVs8AunTzkFGu5rVfLU=",
-      "Microsoft.AspNetCore.Components.dll": "sha256-FXUfP2S8+iCBkLFqgJXFCh++ftv8RYv2lPfVrHlIJOI=",
+      "BlazorLitegraph.dll": "sha256-9cRNv56gDp3SQuu8bmV8uk8xIXUf1VEGPu3JqregBAQ=",
+      "Microsoft.AspNetCore.Components.dll": "sha256-wSdBkl0WkjRU9PrX7ycKKJfCHTQCorbVzGREwOZi6j0=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-pS6neF9kpWN2HIz0ankgvM9P\/LGkoppfgrYLcKqnsOs=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-2fbR6RpUxEMnL89Bp4BedWtQJQRpzWAu87gh1UjPAWk=",
       "Microsoft.Extensions.Configuration.Abstractions.dll": "sha256-zhFtW4kE16TdrpPne9I1Cu9o0KYzrS50VE9MVSifJg4=",
