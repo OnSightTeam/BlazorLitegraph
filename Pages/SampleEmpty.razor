@@ -1,0 +1,93 @@
+@page "/sample_emtpy"
+@inject IJSRuntime JS
+
+<div class="row align-items-center h-100">
+    <div class="col-9 d-flex justify-content-center">
+        <canvas id="mycanvas" height=700 width=1300></canvas>
+    </div>
+    <div class="col-3 justify-content-center">
+        <p>Add Constant Node</p>
+        <div class="row controls">
+            <input type="number" placeholder="Enter node value" @bind="nodeValue" />
+        </div>
+        <div class="row controls">
+            <button @onclick="@SetConstantNode">Add node</button>
+        </div>
+
+        <p class="mt-5">Add Multiply Node</p>
+        <div class="row controls">
+            <button @onclick="@SetMuliplyNode">Add node</button>
+        </div>
+
+        <p class="mt-5">Add Watch Node</p>
+        <div class="row controls">
+            <button @onclick="@SetWatchNode">Add node</button>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            var multiplyJS = "js/nodes/multiply.js";
+            await JS.InvokeVoidAsync("loadJs", multiplyJS);
+
+            var litegraphInitJS = "js/litegraphEmpty.js";
+            await JS.InvokeVoidAsync("loadJs", litegraphInitJS);
+
+            var addingNodes = "js/addingNodes.js";
+            await JS.InvokeVoidAsync("loadJs", addingNodes);
+            
+        }
+
+    }
+    private int? nodeValue;
+    private int positionX = 100;
+    private int positionY = 100;
+
+    async void SetConstantNode()
+    {
+        if (nodeValue == null){
+        await JS.InvokeVoidAsync("SetConstantNode", 1, positionX, positionY);
+        }
+        else{
+            await JS.InvokeVoidAsync("SetConstantNode", nodeValue, positionX, positionY);
+        }
+        if (positionX<1200){
+            positionX+=40;
+        }
+        else{
+            positionY+=40;
+        }
+    }
+
+    async void SetMuliplyNode()
+    {
+        await JS.InvokeVoidAsync("SetMultiplyNode", positionX, positionY);
+        
+        if (positionX<1200){
+            positionX+=40;
+        }
+        else{
+            positionY+=40;
+        }
+    }
+
+    async void SetWatchNode()
+    {
+        await JS.InvokeVoidAsync("SetWatchNode", positionX, positionY);
+        
+        if (positionX<1200){
+            positionX+=40;
+        }
+        else{
+            positionY+=40;
+        }
+    }
+
+}
+

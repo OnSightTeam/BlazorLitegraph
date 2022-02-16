@@ -8,31 +8,53 @@
     <div class="col-3 justify-content-center">
         <p>Add Constant Node</p>
         <div class="row controls">
-            <input type="number" placeholder="Node value" @bind="nodeValue" />
-        </div>
-        <div class="row controls">
-            <input type="text"  placeholder="Unique node name" @bind="nodeName" />
+            <input type="number" placeholder="Enter node value" @bind="nodeValue" />
         </div>
         <div class="row controls">
             <button @onclick="@SetConstantNode">Add node</button>
+        </div>
+
+        <p class="mt-5">Add Multiply Node</p>
+        <div class="row controls">
+            <button @onclick="@SetMuliplyNode">Add node</button>
+        </div>
+
+        <p class="mt-5">Add Watch Node</p>
+        <div class="row controls">
+            <button @onclick="@SetWatchNode">Add node</button>
         </div>
 
     </div>
 </div>
 
 @code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var multiplyJS = "js/nodes/multiply.js";
+            await JS.InvokeVoidAsync("loadJs", multiplyJS);
+
+            var litegraphInitJS = "js/litegraphSample.js";
+            await JS.InvokeVoidAsync("loadJs", litegraphInitJS);
+
+            var addingNodes = "js/addingNodes.js";
+            await JS.InvokeVoidAsync("loadJs", addingNodes);
+            
+        }
+    }
+
     private int? nodeValue;
-    private string ?nodeName;
     private int positionX = 100;
     private int positionY = 100;
 
     async void SetConstantNode()
     {
         if (nodeValue == null){
-        await JS.InvokeVoidAsync("SetConstantNode", nodeName, 1, positionX, positionY);
+        await JS.InvokeVoidAsync("SetConstantNode", 1, positionX, positionY);
         }
         else{
-            await JS.InvokeVoidAsync("SetConstantNode", nodeName, nodeValue, positionX, positionY);
+            await JS.InvokeVoidAsync("SetConstantNode", nodeValue, positionX, positionY);
         }
         if (positionX<1200){
             positionX+=40;
@@ -41,4 +63,30 @@
             positionY+=40;
         }
     }
+
+    async void SetMuliplyNode()
+    {
+        await JS.InvokeVoidAsync("SetMultiplyNode", positionX, positionY);
+        
+        if (positionX<1200){
+            positionX+=40;
+        }
+        else{
+            positionY+=40;
+        }
+    }
+
+    async void SetWatchNode()
+    {
+        await JS.InvokeVoidAsync("SetWatchNode", positionX, positionY);
+        
+        if (positionX<1200){
+            positionX+=40;
+        }
+        else{
+            positionY+=40;
+        }
+    }
+
 }
+

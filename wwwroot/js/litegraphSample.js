@@ -20,10 +20,3 @@ node_const2.connect(0,node_multiply,1);
 node_multiply.connect(0, node_watch);
 
 graph.start()
-
-function SetConstantNode(nodeName,value, positionX, positionY){
-    var nodeName = LiteGraph.createNode("basic/const");
-    nodeName.pos = [positionX, positionY];
-    graph.add(nodeName);
-    nodeName.setValue(value);
-}
