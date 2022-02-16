@@ -1,20 +1,12 @@
 ﻿@page "/"
 @inject IJSRuntime JS
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
-
-<div class="row justify-content-between">
-    <h3>Custom node added called "multiply". It can be found in "basic/mult"</h3>
-
-    <div class="col-8">
-        <canvas id="mycanvas" height=500 width=1000></canvas>
+<div class="row align-items-center h-100">
+    <div class="col-9 d-flex justify-content-center">
+        <canvas id="mycanvas" height=700 width=1300></canvas>
     </div>
-    <div class="col-4">
-        <p>Add Constant Node from Blazor side</p>
+    <div class="col-3 justify-content-center">
+        <p>Add Constant Node</p>
         <input type="number" placeholder="Enter node value" @bind="inputValue" />
         <button @onclick="@SetConstantNode">Add node</button>
     </div>
@@ -26,10 +18,10 @@ Welcome to your new app.
     async void SetConstantNode()
     {
         if (inputValue == null){
-        await JS.InvokeVoidAsync("SetConstantNode", "node_const3", 1);
+        await JS.InvokeVoidAsync("SetConstantNode", "node_const3", 1, 100, 100);
         }
         else{
-            await JS.InvokeVoidAsync("SetConstantNode", "node_const3", inputValue);
+            await JS.InvokeVoidAsync("SetConstantNode", "node_const3", inputValue, 100, 100);
         }
     }
 }
