@@ -1,7 +1,14 @@
 @page "/new_canvas"
 @inject IJSRuntime JS
 
-<div class="row align-items-center h-100">
+<div class="row align-content-center h-100">
+    <div class="row" style="height: 5vh!important;">
+        <div class="mx-4 col-4">
+            <button class="save-load" id="save" @onclick="@SaveCanvas">Save</button>
+            <button class="save-load" id="load" @onclick="@LoadCanvas">Load</button>
+        </div>
+    </div>
+    
     <div class="col-9 d-flex justify-content-center">
         <canvas id="mycanvas" height=700 width=1300></canvas>
     </div>
@@ -39,9 +46,12 @@
             var litegraphInitJS = "js/litegraphEmpty.js";
             await JS.InvokeVoidAsync("loadJs", litegraphInitJS);
 
-            var addingNodes = "js/addingNodes.js";
+            var addingNodes = "js/utils/graphControls/addingNodes.js";
             await JS.InvokeVoidAsync("loadJs", addingNodes);
             
+            var saveLoadCanvas = "js/utils/graphControls/saveLoadCanvas.js";
+            await JS.InvokeVoidAsync("loadJs", saveLoadCanvas);
+
         }
 
     }
@@ -87,6 +97,16 @@
         else{
             positionY+=40;
         }
+    }
+
+    async void SaveCanvas()
+    {
+        await JS.InvokeVoidAsync("SaveCanvas", "EmptyCanvas");
+    }
+
+    async void LoadCanvas()
+    {
+        await JS.InvokeVoidAsync("LoadCanvas", "EmptyCanvas");
     }
 
 }
