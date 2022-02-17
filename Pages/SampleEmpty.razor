@@ -1,4 +1,12 @@
-@page "/new_canvas"
+@page "/new_canvas_1"
+@page "/new_canvas_2"
+@page "/new_canvas_3"
+@page "/new_canvas_4"
+@page "/new_canvas_5"
+
+@inject NavigationManager NavigationManager
+
+
 @inject IJSRuntime JS
 
 <div class="row align-content-center h-100">
@@ -55,10 +63,20 @@
         }
 
     }
+
     private int? nodeValue;
+
+    public string? canvasName;
+
     private int positionX = 100;
     private int positionY = 100;
 
+    private string? currentUrl;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.Uri;
+    }
     async void SetConstantNode()
     {
         if (nodeValue == null){
@@ -101,13 +119,12 @@
 
     async void SaveCanvas()
     {
-        await JS.InvokeVoidAsync("SaveCanvas", "EmptyCanvas");
+        await JS.InvokeVoidAsync("SaveCanvas", @currentUrl);
     }
 
     async void LoadCanvas()
     {
-        await JS.InvokeVoidAsync("LoadCanvas", "EmptyCanvas");
+        await JS.InvokeVoidAsync("LoadCanvas", @currentUrl);
     }
-
 }
 
