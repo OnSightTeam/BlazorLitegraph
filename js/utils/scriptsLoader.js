@@ -8,9 +8,9 @@ function loadJs(sourceUrl) {
     tag.src = sourceUrl;
     tag.type = "text/javascript";
 
-    tag.onload = function () {
-        console.log("Script loaded successfully");
-    }
+    // tag.onload = function () {
+    //     console.log("Script loaded successfully");
+    // }
     
     tag.onerror = function () {
         console.error("Failed to load script");
