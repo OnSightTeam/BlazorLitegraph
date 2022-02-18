@@ -1,19 +1,14 @@
-@page "/new_canvas_1"
-@page "/new_canvas_2"
-@page "/new_canvas_3"
-@page "/new_canvas_4"
-@page "/new_canvas_5"
+@page "/new_canvas"
 
 @inject NavigationManager NavigationManager
 
 
 @inject IJSRuntime JS
 
-<div class="row align-content-center h-100">
+<div class="row m-0 p-0 align-content-center h-100">
     <div class="row" style="height: 5vh!important;">
-        <div class="mx-4 col-4">
-            <button class="save-load" id="save" @onclick="@SaveCanvas">Save</button>
-            <button class="save-load" id="load" @onclick="@LoadCanvas">Load</button>
+        <div class="col-9 p-1 d-flex justify-content-end flex-wrap align-content-center">
+            <button class="save-load" style="margin-left: 10%;" @onclick="@ResetCanvas">Reset</button>
         </div>
     </div>
     
@@ -40,6 +35,13 @@
         </div>
 
     </div>
+
+    <div class="row" style="height: 5vh!important;">
+        <div class="col-9 p-1 d-flex justify-content-end flex-wrap align-content-center">
+            <button class="save-load mx-4" @onclick="@SaveCanvas">Save</button>
+            <button class="save-load" @onclick="@LoadCanvas">Load</button>
+        </div>
+    </div>
 </div>
 
 @code {
@@ -60,6 +62,8 @@
             var saveLoadCanvas = "js/utils/graphControls/saveLoadCanvas.js";
             await JS.InvokeVoidAsync("loadJs", saveLoadCanvas);
 
+            var resetCanvas = "js/utils/graphControls/resetCanvas.js";
+            await JS.InvokeVoidAsync("loadJs", resetCanvas);
         }
 
     }
@@ -125,6 +129,11 @@
     async void LoadCanvas()
     {
         await JS.InvokeVoidAsync("LoadCanvas", @currentUrl);
+    }
+
+    async void ResetCanvas()
+    {
+        await JS.InvokeVoidAsync("ResetCanvas", @currentUrl);
     }
 }
 

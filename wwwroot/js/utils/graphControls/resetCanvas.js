@@ -1,0 +1,3 @@
+function ResetCanvas(){
+    graph.clear();
+}
