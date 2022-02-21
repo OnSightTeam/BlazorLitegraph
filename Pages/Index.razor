@@ -38,6 +38,7 @@
 
     <div class="row" style="height: 5vh!important;">
         <div class="col-9 p-1 d-flex justify-content-end flex-wrap align-content-center">
+            @graphChanged
             @if (graphChanged == true)
             {
                 <button class="save-load" @onclick="@SaveCanvas">Save</button>
@@ -90,7 +91,7 @@
     private int positionY = 100;
     private string? currentUrl;
     private bool? savedDataInStorage;
-    private bool? graphChanged;
+    private bool graphChanged {get; set;}
     async void SetConstantNode()
     {
         if (nodeValue == null){
@@ -153,8 +154,8 @@
     private async Task CheckGraphChanges()
     {
         graphChanged = await JS.InvokeAsync<bool>("IsGraphChanged");
-        @* await InvokeAsync(StateHasChanged); *@
-
+        @* StateHasChanged(); *@
+        await Task.Delay(1000);
     }
 
 
