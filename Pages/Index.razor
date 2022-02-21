@@ -5,7 +5,10 @@
 <div class="row m-0 p-0 align-content-center h-100">
     <div class="row" style="height: 5vh!important;">
         <div class="col-9 p-1 d-flex justify-content-end flex-wrap align-content-center">
+            @if (graphChanged == true)
+            {
             <button class="save-load" style="margin-left: 10%;" @onclick="@ResetCanvas">Reset</button>
+            }
         </div>
     </div>
     
@@ -35,8 +38,14 @@
 
     <div class="row" style="height: 5vh!important;">
         <div class="col-9 p-1 d-flex justify-content-end flex-wrap align-content-center">
-            <button class="save-load mx-4" @onclick="@SaveCanvas">Save</button>
-            <button class="save-load" @onclick="@LoadCanvas">Load</button>
+            @if (graphChanged == true)
+            {
+                <button class="save-load" @onclick="@SaveCanvas">Save</button>
+            }
+            @if (savedDataInStorage == true)
+                {
+                    <button class="save-load" style="margin-left: 2%;" @onclick="@LoadCanvas">Load</button>
+                }
         </div>
     </div>
 </div>
@@ -60,22 +69,28 @@
 
             var resetCanvas = "js/utils/graphControls/resetCanvas.js";
             await JS.InvokeVoidAsync("loadJs", resetCanvas);
+
+            var isGraphChanged = "js/utils/graphControls/isGraphChanged.js";
+            await JS.InvokeVoidAsync("loadJs", isGraphChanged);
         }
+        else{
+            await CheckDataInStorage();
+            await CheckGraphChanges();
+        }
+
     }
-
-    private int? nodeValue;
-
-    public string? canvasName;
-
-    private int positionX = 100;
-    private int positionY = 100;
-
-    private string? currentUrl;
-
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.Uri;
     }
+
+    private int? nodeValue;
+    public string? canvasName;
+    private int positionX = 100;
+    private int positionY = 100;
+    private string? currentUrl;
+    private bool? savedDataInStorage;
+    private bool? graphChanged;
     async void SetConstantNode()
     {
         if (nodeValue == null){
@@ -130,5 +145,18 @@
     {
         await JS.InvokeVoidAsync("ResetCanvas");
     }
+    private async Task CheckDataInStorage()
+    {
+        savedDataInStorage = await JS.InvokeAsync<bool>("CheckSavedData", @currentUrl);
+    }
+
+    private async Task CheckGraphChanges()
+    {
+        graphChanged = await JS.InvokeAsync<bool>("IsGraphChanged");
+        @* await InvokeAsync(StateHasChanged); *@
+
+    }
+
+
 }
 

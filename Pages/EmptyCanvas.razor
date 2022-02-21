@@ -1,9 +1,6 @@
 @page "/new_canvas"
-
-@inject NavigationManager NavigationManager
-
-
 @inject IJSRuntime JS
+@inject NavigationManager NavigationManager
 
 <div class="row m-0 p-0 align-content-center h-100">
     <div class="row" style="height: 5vh!important;">
@@ -38,16 +35,25 @@
 
     <div class="row" style="height: 5vh!important;">
         <div class="col-9 p-1 d-flex justify-content-end flex-wrap align-content-center">
-            <button class="save-load mx-4" @onclick="@SaveCanvas">Save</button>
-            <button class="save-load" @onclick="@LoadCanvas">Load</button>
+            <button class="save-load" @onclick="@SaveCanvas">Save</button>
+            @if (savedDataInStorage == true)
+                {
+                    <button class="save-load" style="margin-left: 2%;" @onclick="@LoadCanvas">Load</button>
+                }
         </div>
     </div>
 </div>
 
 @code {
+    private int? nodeValue;
+    public string? canvasName;
+    private int positionX = 100;
+    private int positionY = 100;
+    private string? currentUrl;
+    private bool savedDataInStorage;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-
         if (firstRender)
         {
             var multiplyJS = "js/nodes/multiply.js";
@@ -65,18 +71,10 @@
             var resetCanvas = "js/utils/graphControls/resetCanvas.js";
             await JS.InvokeVoidAsync("loadJs", resetCanvas);
         }
-
+        else {
+            await CheckDataInStorage();
+        }
     }
-
-    private int? nodeValue;
-
-    public string? canvasName;
-
-    private int positionX = 100;
-    private int positionY = 100;
-
-    private string? currentUrl;
-
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.Uri;
@@ -134,6 +132,10 @@
     async void ResetCanvas()
     {
         await JS.InvokeVoidAsync("ResetCanvas", @currentUrl);
+    }
+    private async Task CheckDataInStorage(){
+        savedDataInStorage = 
+            await JS.InvokeAsync<bool>("CheckSavedData", @currentUrl);
     }
 }
 

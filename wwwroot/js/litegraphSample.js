@@ -19,4 +19,7 @@ graph.add(node_watch);
 node_const2.connect(0,node_multiply,1);
 node_multiply.connect(0, node_watch);
 
+var graphNodesAtLoad = graph.serialize().nodes;
+var graphLinksAtLoad = graph.serialize().links; 
+
 graph.start()
