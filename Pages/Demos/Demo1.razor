@@ -10,7 +10,7 @@
             <div class="row h-100 d-flex flex-wrap align-content-center" style="padding-left: 2%;">
                 <div class="col-6 p-1 d-flex align-content-center">
                     <select onChange="window.location.href=this.value"> 
-                        <option disabled selected value>@currentUrlToDisplay</option>
+                        <option disabled selected value>strings</option>
                         <option value="strings">strings</option> 
                     </select>
                 </div>
@@ -95,9 +95,6 @@
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.Uri;
-        currentUrlToDisplay = NavigationManager.Uri.ToString().ToLower();
-        currentUrlToDisplay = currentUrlToDisplay.Replace(NavigationManager.BaseUri, "");
-
         timer.Elapsed += async (sender, eventArgs) => await CheckGraphChanges();
         timer.Start();
     }
@@ -107,8 +104,6 @@
     private int positionX = 100;
     private int positionY = 100;
     private string? currentUrl;
-    private string? currentUrlToDisplay;
-
     private bool? savedDataInStorage;
     private bool graphChanged {get; set;}
 

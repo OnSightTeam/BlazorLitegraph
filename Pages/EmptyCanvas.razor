@@ -95,8 +95,6 @@
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.Uri;
-        currentUrlToDisplay = NavigationManager.Uri.ToString().ToLower();
-        currentUrlToDisplay = currentUrlToDisplay.Replace(NavigationManager.BaseUri, "");        
         timer.Elapsed += async (sender, eventArgs) => await CheckGraphChanges();
         timer.Start();
     }
@@ -106,7 +104,6 @@
     private int positionX = 100;
     private int positionY = 100;
     private string? currentUrl;
-    private string? currentUrlToDisplay;
     private bool? savedDataInStorage;
     private bool graphChanged {get; set;}
 

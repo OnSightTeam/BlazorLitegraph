@@ -95,8 +95,7 @@
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.Uri;
-        currentUrlToDisplay = NavigationManager.Uri.ToString().ToLower();
-        currentUrlToDisplay = currentUrlToDisplay.Replace(NavigationManager.BaseUri, "");        
+
         timer.Elapsed += async (sender, eventArgs) => await CheckGraphChanges();
         timer.Start();
     }
