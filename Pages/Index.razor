@@ -1,6 +1,8 @@
 ﻿@page "/"
 @inject IJSRuntime JS
 @inject NavigationManager NavigationManager
+@using System.Timers
+@implements IDisposable
 
 <div class="row m-0 p-0 align-content-center h-100">
     <div class="row" style="height: 5vh!important;">
@@ -38,7 +40,6 @@
 
     <div class="row" style="height: 5vh!important;">
         <div class="col-9 p-1 d-flex justify-content-end flex-wrap align-content-center">
-            @graphChanged
             @if (graphChanged == true)
             {
                 <button class="save-load" @onclick="@SaveCanvas">Save</button>
@@ -76,13 +77,14 @@
         }
         else{
             await CheckDataInStorage();
-            await CheckGraphChanges();
         }
 
     }
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.Uri;
+        timer.Elapsed += async (sender, eventArgs) => await CheckGraphChanges();
+        timer.Start();
     }
 
     private int? nodeValue;
@@ -92,6 +94,9 @@
     private string? currentUrl;
     private bool? savedDataInStorage;
     private bool graphChanged {get; set;}
+
+    private Timer timer = new(1000);
+
     async void SetConstantNode()
     {
         if (nodeValue == null){
@@ -154,10 +159,9 @@
     private async Task CheckGraphChanges()
     {
         graphChanged = await JS.InvokeAsync<bool>("IsGraphChanged");
-        @* StateHasChanged(); *@
-        await Task.Delay(1000);
+        StateHasChanged();
     }
 
-
+    public void Dispose() => timer.Dispose();
 }
 
