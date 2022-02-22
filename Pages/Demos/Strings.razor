@@ -1,0 +1,180 @@
+@page "/strings"
+@inject IJSRuntime JS
+@inject NavigationManager NavigationManager
+@using System.Timers
+@implements IDisposable
+
+<div class="row m-0 p-0 align-content-center h-100">
+    <div class="row" style="height: 5vh!important;">
+        <div class="col-9">
+            <div class="row h-100 d-flex flex-wrap align-content-center" style="padding-left: 2%;">
+                <div class="col-6 p-1 d-flex align-content-center">
+                    <select onChange="window.location.href=this.value"> 
+                        <option disabled selected value>strings</option>
+                        <option value="strings">strings</option>
+                        <option value="slider">slider</option> 
+                    </select>
+                </div>
+                
+                <div class="col-6 p-1 d-flex justify-content-end flex-wrap align-content-center">
+                    @if (graphChanged == true)
+                    {
+                    <button class="save-load" style="margin-left: 10%;" @onclick="@ResetCanvas">Reset</button>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <div class="col-9 d-flex justify-content-center">
+        <canvas id="mycanvas" height=700 width=1300></canvas>
+    </div>
+    <div class="col-3 justify-content-center">
+        <p>Add Constant Node</p>
+        <div class="row controls">
+            <input type="number" placeholder="Enter node value" @bind="nodeValue" />
+        </div>
+        <div class="row controls">
+            <button @onclick="@SetConstantNode">Add node</button>
+        </div>
+
+        <p class="mt-5">Add Multiply Node</p>
+        <div class="row controls">
+            <button @onclick="@SetMuliplyNode">Add node</button>
+        </div>
+
+        <p class="mt-5">Add Watch Node</p>
+        <div class="row controls">
+            <button @onclick="@SetWatchNode">Add node</button>
+        </div>
+
+    </div>
+
+    <div class="row" style="height: 5vh!important;">
+        <div class="col-9 p-1 d-flex justify-content-end flex-wrap align-content-center">
+            @if (graphChanged == true)
+            {
+                <button class="save-load" @onclick="@SaveCanvas">Save</button>
+            }
+            @if (savedDataInStorage == true)
+                {
+                    <button class="save-load" style="margin-left: 2%;" @onclick="@LoadCanvas">Load</button>
+                }
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var multiplyJS = "js/nodes/multiply.js";
+            await JS.InvokeVoidAsync("loadJs", multiplyJS);
+
+            var litegraphInitJS = "js/demo/stringsDemo.js";
+            await JS.InvokeVoidAsync("loadJs", litegraphInitJS);
+
+            var addingNodes = "js/utils/graphControls/addingNodes.js";
+            await JS.InvokeVoidAsync("loadJs", addingNodes);
+            
+            var saveLoadCanvas = "js/utils/graphControls/saveLoadCanvas.js";
+            await JS.InvokeVoidAsync("loadJs", saveLoadCanvas);
+
+            var resetCanvas = "js/utils/graphControls/resetCanvas.js";
+            await JS.InvokeVoidAsync("loadJs", resetCanvas);
+
+            var isGraphChanged = "js/utils/graphControls/isGraphChanged.js";
+            await JS.InvokeVoidAsync("loadJs", isGraphChanged);
+        }
+        else{
+            await CheckDataInStorage();
+        }
+
+    }
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.Uri;
+        timer.Elapsed += async (sender, eventArgs) => await CheckGraphChanges();
+        timer.Start();
+    }
+
+    private int? nodeValue;
+    public string? canvasName;
+    private int positionX = 100;
+    private int positionY = 100;
+    private string? currentUrl;
+    private bool? savedDataInStorage;
+    private bool graphChanged {get; set;}
+
+    private Timer timer = new(1000);
+
+    async void SetConstantNode()
+    {
+        if (nodeValue == null){
+        await JS.InvokeVoidAsync("SetConstantNode", 1, positionX, positionY);
+        }
+        else{
+            await JS.InvokeVoidAsync("SetConstantNode", nodeValue, positionX, positionY);
+        }
+        if (positionX<1200){
+            positionX+=40;
+        }
+        else{
+            positionY+=40;
+        }
+    }
+
+    async void SetMuliplyNode()
+    {
+        await JS.InvokeVoidAsync("SetMultiplyNode", positionX, positionY);
+        
+        if (positionX<1200){
+            positionX+=40;
+        }
+        else{
+            positionY+=40;
+        }
+    }
+
+    async void SetWatchNode()
+    {
+        await JS.InvokeVoidAsync("SetWatchNode", positionX, positionY);
+        
+        if (positionX<1200){
+            positionX+=40;
+        }
+        else{
+            positionY+=40;
+        }
+    }
+
+    async void SaveCanvas()
+    {
+        await JS.InvokeVoidAsync("SaveCanvas", @currentUrl);
+    }
+
+    async void LoadCanvas()
+    {
+        await JS.InvokeVoidAsync("LoadCanvas", @currentUrl);
+    }
+
+    async void ResetCanvas()
+    {
+        await JS.InvokeVoidAsync("ResetCanvas");
+    }
+    private async Task CheckDataInStorage()
+    {
+        savedDataInStorage = await JS.InvokeAsync<bool>("CheckSavedData", @currentUrl);
+    }
+
+    private async Task CheckGraphChanges()
+    {
+        graphChanged = await JS.InvokeAsync<bool>("IsGraphChanged");
+        StateHasChanged();
+    }
+
+    public void Dispose() => timer.Dispose();
+}
+

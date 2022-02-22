@@ -1,4 +1,4 @@
-@page "/strings"
+@page "/slider"
 @inject IJSRuntime JS
 @inject NavigationManager NavigationManager
 @using System.Timers
@@ -10,8 +10,9 @@
             <div class="row h-100 d-flex flex-wrap align-content-center" style="padding-left: 2%;">
                 <div class="col-6 p-1 d-flex align-content-center">
                     <select onChange="window.location.href=this.value"> 
-                        <option disabled selected value>strings</option>
-                        <option value="strings">strings</option> 
+                        <option disabled selected value>slider</option>
+                        <option value="strings">strings</option>
+                        <option value="slider">slider</option> 
                     </select>
                 </div>
                 
@@ -72,7 +73,7 @@
             var multiplyJS = "js/nodes/multiply.js";
             await JS.InvokeVoidAsync("loadJs", multiplyJS);
 
-            var litegraphInitJS = "js/demo/stringsDemo.js";
+            var litegraphInitJS = "js/demo/sliderDemo.js";
             await JS.InvokeVoidAsync("loadJs", litegraphInitJS);
 
             var addingNodes = "js/utils/graphControls/addingNodes.js";
