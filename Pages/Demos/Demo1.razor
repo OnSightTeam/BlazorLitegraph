@@ -1,4 +1,4 @@
-@page "/new_canvas"
+@page "/strings"
 @inject IJSRuntime JS
 @inject NavigationManager NavigationManager
 @using System.Timers
@@ -10,7 +10,7 @@
             <div class="row h-100 d-flex flex-wrap align-content-center" style="padding-left: 2%;">
                 <div class="col-6 p-1 d-flex align-content-center">
                     <select onChange="window.location.href=this.value"> 
-                        <option disabled selected value>--select demo--</option>
+                        <option disabled selected value>@currentUrlToDisplay</option>
                         <option value="strings">strings</option> 
                     </select>
                 </div>
@@ -72,7 +72,7 @@
             var multiplyJS = "js/nodes/multiply.js";
             await JS.InvokeVoidAsync("loadJs", multiplyJS);
 
-            var litegraphInitJS = "js/litegraphEmpty.js";
+            var litegraphInitJS = "js/demo/stringsDemo.js";
             await JS.InvokeVoidAsync("loadJs", litegraphInitJS);
 
             var addingNodes = "js/utils/graphControls/addingNodes.js";
@@ -96,7 +96,8 @@
     {
         currentUrl = NavigationManager.Uri;
         currentUrlToDisplay = NavigationManager.Uri.ToString().ToLower();
-        currentUrlToDisplay = currentUrlToDisplay.Replace(NavigationManager.BaseUri, "");        
+        currentUrlToDisplay = currentUrlToDisplay.Replace(NavigationManager.BaseUri, "");
+
         timer.Elapsed += async (sender, eventArgs) => await CheckGraphChanges();
         timer.Start();
     }
@@ -107,6 +108,7 @@
     private int positionY = 100;
     private string? currentUrl;
     private string? currentUrlToDisplay;
+
     private bool? savedDataInStorage;
     private bool graphChanged {get; set;}
 

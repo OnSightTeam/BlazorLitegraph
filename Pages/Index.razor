@@ -6,11 +6,23 @@
 
 <div class="row m-0 p-0 align-content-center h-100">
     <div class="row" style="height: 5vh!important;">
-        <div class="col-9 p-1 d-flex justify-content-end flex-wrap align-content-center">
-            @if (graphChanged == true)
-            {
-            <button class="save-load" style="margin-left: 10%;" @onclick="@ResetCanvas">Reset</button>
-            }
+        <div class="col-9">
+            <div class="row h-100 d-flex flex-wrap align-content-center" style="padding-left: 2%;">
+                <div class="col-6 p-1 d-flex align-content-center">
+                    <select onChange="window.location.href=this.value"> 
+                        <option disabled selected value>--select demo--</option>
+                        <option value="strings">strings</option> 
+                    </select>
+                </div>
+                
+                <div class="col-6 p-1 d-flex justify-content-end flex-wrap align-content-center">
+                    @if (graphChanged == true)
+                    {
+                    <button class="save-load" style="margin-left: 10%;" @onclick="@ResetCanvas">Reset</button>
+                    }
+                </div>
+            </div>
+
         </div>
     </div>
     
@@ -83,6 +95,8 @@
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.Uri;
+        currentUrlToDisplay = NavigationManager.Uri.ToString().ToLower();
+        currentUrlToDisplay = currentUrlToDisplay.Replace(NavigationManager.BaseUri, "");        
         timer.Elapsed += async (sender, eventArgs) => await CheckGraphChanges();
         timer.Start();
     }
@@ -92,6 +106,7 @@
     private int positionX = 100;
     private int positionY = 100;
     private string? currentUrl;
+    private string? currentUrlToDisplay;
     private bool? savedDataInStorage;
     private bool graphChanged {get; set;}
 
