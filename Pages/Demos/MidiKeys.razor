@@ -1,4 +1,4 @@
-@page "/new_canvas"
+@page "/keys"
 @inject IJSRuntime JS
 @inject NavigationManager NavigationManager
 @using System.Timers
@@ -10,7 +10,7 @@
             <div class="row h-100 d-flex flex-wrap align-content-center" style="padding-left: 2%;">
                 <div class="col-6 p-1 d-flex align-content-center">
                     <select onChange="window.location.href=this.value"> 
-                        <option disabled selected value>--select demo--</option>
+                        <option disabled selected value>midi keys demo</option>
                         <option value="keys">midi keys demo</option>
                         <option value="strings">strings demo</option>
                         <option value="slider">slider demo</option>
@@ -74,7 +74,7 @@
             var multiplyJS = "js/nodes/multiply.js";
             await JS.InvokeVoidAsync("loadJs", multiplyJS);
 
-            var litegraphInitJS = "js/litegraphEmpty.js";
+            var litegraphInitJS = "js/demo/midiKeysDemo.js";
             await JS.InvokeVoidAsync("loadJs", litegraphInitJS);
 
             var addingNodes = "js/utils/graphControls/addingNodes.js";
